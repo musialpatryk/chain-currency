@@ -37,13 +37,6 @@ class Client extends Command
         $io->title('Chain currency client');
 
         do {
-            $chain = $this->chainRepository->get();
-            if (!$chain->isValid()) {
-                $io->error('Chain is corrupted, checking if its fixed...');
-                sleep(self::SLEEP_TIME);
-                continue;
-            }
-
             $action = $io->choice(
                 'What action do you want to perform?',
                 [
@@ -53,6 +46,14 @@ class Client extends Command
                 ],
                 self::ACTION_CHECK_BALANCE
             );
+
+            $chain = $this->chainRepository->get();
+            if (!$chain->isValid()) {
+                $io->error('Chain is corrupted, checking if its fixed...');
+                sleep(self::SLEEP_TIME);
+                continue;
+            }
+
             match ($action) {
                 self::ACTION_CHECK_BALANCE => $this->checkBalance($io, $chain),
                 self::ACTION_TRANSFER => $this->transfer($io, $chain),
