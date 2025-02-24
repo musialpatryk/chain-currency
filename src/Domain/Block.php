@@ -36,7 +36,7 @@ readonly class Block implements \JsonSerializable
 
     public function getHash(): string
     {
-        return hash('sha256', json_encode($this->toArray()));
+        return hash('sha256', json_encode($this->jsonSerialize()));
     }
 
     public function getPreviousHash(): ?string
@@ -44,22 +44,13 @@ readonly class Block implements \JsonSerializable
         return $this->previousHash;
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
-        return [
+        return  [
             self::AMOUNT => $this->amount,
             self::SENDER => $this->sender,
             self::RECEIVER => $this->receiver,
+            self::PREVIOUS_HASH => $this->getPreviousHash(),
         ];
-    }
-
-    public function jsonSerialize(): array
-    {
-        return array_merge(
-            $this->toArray(),
-            [
-                self::PREVIOUS_HASH => $this->getPreviousHash(),
-            ],
-        );
     }
 }
