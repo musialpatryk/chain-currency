@@ -1,0 +1,17 @@
+{
+    "name": "musialpatryk/chain-currency",
+    "type": "project",
+    "scripts": {
+        "client": "php bin/console app:client"
+    },
+    "autoload": {
+        "psr-4": {
+            "ChainCurrency\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.2",
+        "symfony/console": "^7.2",
+        "symfony/filesystem": "^7.2"
+    }
+}
