@@ -22,7 +22,6 @@ class Client extends Command
     private const SLEEP_TIME = 5;
     private const ACTION_CHECK_BALANCE = 'Check balance';
     private const ACTION_TRANSFER = 'Transfer amount';
-    private const ACTION_REFRESH = 'Refresh';
     private const ACTION_CLOSE = 'Close';
     private ChainRepository $chainRepository;
 
@@ -37,8 +36,8 @@ class Client extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title('Chain currency client');
 
-        $chain = $this->chainRepository->get();
         do {
+            $chain = $this->chainRepository->get();
             if (!$chain->isValid()) {
                 $io->error('Chain is corrupted, checking if its fixed...');
                 sleep(self::SLEEP_TIME);
@@ -50,7 +49,6 @@ class Client extends Command
                 [
                     self::ACTION_CHECK_BALANCE,
                     self::ACTION_TRANSFER,
-                    self::ACTION_REFRESH,
                     self::ACTION_CLOSE,
                 ],
                 self::ACTION_CHECK_BALANCE
@@ -58,7 +56,6 @@ class Client extends Command
             match ($action) {
                 self::ACTION_CHECK_BALANCE => $this->checkBalance($io, $chain),
                 self::ACTION_TRANSFER => $this->transfer($io, $chain),
-                self::ACTION_REFRESH => $chain = $this->chainRepository->get(),
                 self::ACTION_CLOSE => $io->info('Closing client!'),
                 default => null,
             };
